@@ -14,6 +14,9 @@ export const Route = createRootRoute({
         <Link to="/tasklist" className="[&.active]:font-bold">
           Tasklist
         </Link>
+        <Link to="/task" className="[&.active]:font-bold">
+          TaskForm
+        </Link>
       </div>
       <hr />
       <Outlet />
