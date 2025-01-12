@@ -1,6 +1,6 @@
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
-import { federation } from "@module-federation/vite";
+import federation from "@originjs/vite-plugin-federation";
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -12,23 +12,11 @@ export default defineConfig({
   plugins: [
     vue(),
     federation({
-      // name: "vite_provider",
-      // manifest: true,
-      // remotes: {
-      //   esm_remote: {
-      //     type: "module",
-      //     name: "esm_remote",
-      //     entry: "https://[...]/remoteEntry.js",
-      //   },
-      //   var_remote: "var_remote@https://[...]/remoteEntry.js",
-      // },
       name: "taskForm",
       filename: "taskFormRemoteEntry.js",
       exposes: {
-        "./taskForm": "./src/App.vue",
+        "./TaskForm": "./src/bootstrap.js",
       },
-      shared: ["vue"],
-      // shared: ['react', 'react-dom', 'zustand'],
     }),
   ],
   build: {
