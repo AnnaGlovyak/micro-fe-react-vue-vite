@@ -12,6 +12,9 @@ export default defineConfig({
         taskForm: "http://localhost:2000/assets/taskFormRemoteEntry.js",
         list: "http://localhost:4000/assets/listRemoteEntry.js",
       },
+      exposes: {
+        "./useNavigate": "./src/useNavigate.ts",
+      },
       shared: ["react", "react-dom"],
     }),
     TanStackRouterVite(),

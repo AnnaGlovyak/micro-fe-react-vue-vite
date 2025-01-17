@@ -13,6 +13,9 @@ export default defineConfig({
         "./List": "./src/App.tsx",
       },
       shared: ["react", "react-dom"],
+      remotes: {
+        useNavigate: "http://localhost:5000/assets/remoteEntry.js",
+      },
     }),
   ],
   build: {

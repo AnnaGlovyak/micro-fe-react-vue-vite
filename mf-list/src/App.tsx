@@ -2,6 +2,9 @@ import { useState, useEffect } from "react";
 import "./App.css";
 
 import { createClient } from "@supabase/supabase-js";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-expect-error
+import { onNavigate } from "useNavigate/useNavigate";
 
 const supabase = createClient(
   import.meta.env.VITE_SUPABASE_URL,
@@ -10,6 +13,7 @@ const supabase = createClient(
 
 function App() {
   const [taskList, setTaskList] = useState([]);
+  const { navigate } = onNavigate();
   useEffect(() => {
     getTaskList();
   }, []);
@@ -33,6 +37,7 @@ function App() {
       </div>
       <div className="card">
         <button>Create task</button>
+        <button onClick={() => navigate({ to: "/" })}>Go to main page</button>
       </div>
     </>
   );
