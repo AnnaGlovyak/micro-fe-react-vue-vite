@@ -1,6 +1,7 @@
 <script setup lang="ts">
-  import { ref } from "vue";
+  import { ref, onMounted } from "vue";
   import { Priority } from "../types/task";
+  import { supabase } from "../lib/supabaseClient";
 
   defineProps<{ isEdit: boolean }>();
   const form = ref({
@@ -10,10 +11,30 @@
     due_date: new Date(),
     completed: false,
   });
+
+  const editTask = async () => {
+    console.log("Edit with", form.value);
+    const { error } = await supabase
+      .from("todos")
+      .update(form.value)
+      .eq("id", id);
+
+    if (error) {
+      throw new Error(`Failed to insert todo: ${error.message}`);
+    }
+  };
+
+  const createTask = async () => {
+    const { error } = await supabase.from("todos").insert([form.value]);
+
+    if (error) {
+      throw new Error(`Failed to insert todo: ${error.message}`);
+    }
+  };
 </script>
 
 <template>
-  <form class="form">
+  <form class="form" @submit.prevent>
     <div class="form-field">
       <label for="title">
         Title
@@ -35,7 +56,7 @@
     <div class="form-field">
       <label for="priority">
         Priority
-        <select name="priority" id="priority">
+        <select name="priority" id="priority" v-model="form.priority">
           <option :value="Priority.p1">p1</option>
           <option :value="Priority.p2">p2</option>
           <option :value="Priority.p3">p3</option>
@@ -51,7 +72,7 @@
     </div>
     <div class="form-buttons">
       <button>Cancel</button>
-      <button>Save</button>
+      <button @click="createTask">Save</button>
     </div>
   </form>
 </template>
@@ -63,7 +84,7 @@
     margin-top: 24px;
     width: 100%;
     max-width: 350px;
-    background: #d7d7d7;
+    background: #f7f7f7;
     border-radius: 20px;
     text-align: left;
   }
@@ -78,26 +99,36 @@
   .form-field input[type="text"] {
     width: 100%;
     height: 32px;
-    background-color: #d7d7d7;
+    background-color: #ffffff;
     color: #080808;
     border: 1px solid #a1a1a1;
     border-radius: 5px;
+    box-sizing: border-box;
+    margin-top: 4px;
   }
   .form-field input[type="date"] {
     display: block;
     height: 32px;
     border-radius: 5px;
+    box-sizing: border-box;
+    margin-top: 4px;
   }
   .form-field select {
     width: 100%;
     height: 32px;
-    background-color: #d7d7d7;
+    background-color: #ffffff;
     color: #080808;
     border-radius: 5px;
+    margin-top: 4px;
   }
   .form-buttons {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     margin-top: 24px;
+    gap: 24px;
+  }
+  button {
+    padding: 6px 12px;
+    font-size: 1em;
   }
 </style>
