@@ -1,8 +1,9 @@
 import { createApp } from "vue";
 import App from "./App.vue";
 
-const mount = (el) => {
+const mount = (el, hostNavigation) => {
   const app = createApp(App);
+  app.provide("navigate", hostNavigation);
   app.mount(el);
 };
 
