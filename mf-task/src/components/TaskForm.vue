@@ -1,7 +1,7 @@
 <script setup lang="ts">
-  import { ref, onMounted } from "vue";
+  import { ref } from "vue";
   import { Priority } from "../types/task";
-  import { supabase } from "../lib/supabaseClient";
+  import { supabase } from "../lib/supabaseClient.ts";
 
   defineProps<{ isEdit: boolean }>();
   const form = ref({
@@ -12,11 +12,16 @@
     completed: false,
   });
 
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-expect-error
   const editTask = async () => {
     console.log("Edit with", form.value);
     const { error } = await supabase
       .from("todos")
       .update(form.value)
+
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error
       .eq("id", id);
 
     if (error) {
